@@ -64,7 +64,24 @@ install: ## Install dotfiles from the repository to $HOME (creates symlinks)
 	done
 	@echo "Installation complete!"
 
-sync: ## Sync dotfiles with the remote repository (pull, commit, push)
+sync: ## Sync tracked dotfiles from $HOME to the repository, then commit and push
+	@echo "Syncing dotfiles from $(HOME) to repository..."
+	@if [ ! -d "$(REPO_HOME)" ]; then \
+		echo "No dotfiles found in $(REPO_HOME)."; \
+		exit 1; \
+	fi
+	@find "$(REPO_HOME)" -type f | while read -r file; do \
+		relpath=$${file#"$(REPO_HOME)"/}; \
+		source="$(HOME)/$$relpath"; \
+		if [ -e "$$source" ]; then \
+			if ! cmp -s "$$source" "$$file"; then \
+				echo "Updating $$relpath in repository..."; \
+				cp -a "$$source" "$$file"; \
+			fi; \
+		else \
+			echo "Warning: $$source no longer exists in home directory."; \
+		fi; \
+	done
 	@echo "Syncing dotfiles with remote..."
 	@git pull --rebase || echo "No remote or pull failed, continuing..."
 	@git add .
