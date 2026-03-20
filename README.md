@@ -18,7 +18,7 @@ A simple, lightweight, Makefile-driven utility to manage your dotfiles. It track
 
 1. Clone this repository to your preferred location (e.g., `~/Projects/dotfiles` or `~/.dotfiles`):
    ```bash
-   git clone <your-repo-url> ~/Projects/dotfiles
+   git clone https://github.com/fzl-22/dotfiles.git ~/Projects/dotfiles
    cd ~/Projects/dotfiles
    ```
 
@@ -43,7 +43,7 @@ make add FILE=~/.config/nvim/init.lua
 **What happens?**
 The script computes the file's path relative to `$HOME`, creates the necessary parent directories inside the repository, and copies the file over. 
 
-For example, `make add FILE=~/.config/nvim/init.lua` will copy the file to `./.config/nvim/init.lua` inside the repository.
+For example, `make add FILE=~/.config/nvim/init.lua` will copy the file to `./home/.config/nvim/init.lua` inside the repository.
 
 ### Syncing tracked dotfiles (`make sync`)
 
@@ -54,7 +54,7 @@ make sync
 ```
 
 **What happens?**
-The utility scans all files currently tracked in the repository (excluding `.git`, `Makefile`, and `README.md`) and updates them with the latest versions from your `$HOME` directory. This is perfect for when you've been tweaking configs locally and want to securely save them.
+The utility scans all files currently tracked in the repository's `home` directory and updates them with the latest versions from your `$HOME` directory. This is perfect for when you've been tweaking configs locally and want to securely save them.
 
 ### Installing dotfiles to a new machine (`make install`)
 
@@ -77,10 +77,11 @@ If you add `~/.zshrc` and `~/.config/alacritty/alacritty.yml`, your repository w
 dotfiles/
 ├── Makefile
 ├── README.md
-├── .zshrc
-└── .config/
-    └── alacritty/
-        └── alacritty.yml
+└── home/
+    ├── .zshrc
+    └── .config/
+        └── alacritty/
+            └── alacritty.yml
 ```
 
 When you run `make install`, it ensures `~/.config/alacritty` exists and safely symlinks the repository files into place.

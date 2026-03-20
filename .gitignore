@@ -16,3 +16,13 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Backup
+backup/
+
+# Home specific
+home/**/.git/
+*.zwc
+*.old
+*.bak
+*.mdb

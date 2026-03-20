@@ -1,0 +1,75 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "enable_language_server": true,
+  "languages": {
+    "C": {
+      "tab_size": 2,
+      "format_on_save": "on",
+    },
+    "Groovy": {
+      "enable_language_server": false,
+    },
+  },
+  "git_panel": {
+    "tree_view": true,
+    "status_style": "icon",
+    "fallback_branch_name": "master",
+  },
+  "project_panel": {
+    "auto_reveal_entries": true,
+  },
+  "inlay_hints": {
+    "enabled": true,
+  },
+  "sticky_scroll": {
+    "enabled": true,
+  },
+  "agent": {
+    "default_profile": "write",
+    "default_model": {
+      "provider": "google",
+      "model": "gemini-3.1-pro-preview",
+      "enable_thinking": true,
+    },
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "agent_servers": {
+    },
+  "git": {
+    "inline_blame": {
+      "show_commit_summary": true,
+    },
+  },
+  "colorize_brackets": true,
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "vim_mode": true,
+  "icon_theme": "Catppuccin Macchiato",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "dark",
+    "light": "macOS Classic Light",
+    "dark": "Catppuccin Macchiato",
+  },
+  "diagnostics": {
+    "include_warnings": true,
+    "inline": {
+      "enabled": true,
+    },
+  },
+  "minimap": {
+    "show": "always",
+  },
+  "hover_popover_delay": 150,
+}

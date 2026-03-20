@@ -50,13 +50,13 @@ install: ## Install dotfiles from the repository to $HOME (creates symlinks)
 		echo "No dotfiles found in $(REPO_HOME)."; \
 		exit 1; \
 	fi
-	@find "$(REPO_HOME)" -type f | while read -r file; do \
+	@find "$(REPO_HOME)" -type d -name ".git" -prune -o -type f ! -name "*.zwc" ! -name "*.old" ! -name "*.mdb" ! -name ".DS_Store" -print | while read -r file; do \
 		relpath=$${file#"$(REPO_HOME)"/}; \
 		target="$(HOME)/$$relpath"; \
 		if [ -e "$$target" ] && [ ! -L "$$target" ]; then \
-			echo "Backing up existing $$target to $(BACKUP_DIR)/$$relpath"; \
-			mkdir -p "$(BACKUP_DIR)/$$(dirname "$$relpath")"; \
-			mv "$$target" "$(BACKUP_DIR)/$$relpath"; \
+			echo "Backing up existing $$target to $(BACKUP_DIR)/home/$$relpath"; \
+			mkdir -p "$(BACKUP_DIR)/home/$$(dirname "$$relpath")"; \
+			mv "$$target" "$(BACKUP_DIR)/home/$$relpath"; \
 		fi; \
 		mkdir -p "$$(dirname "$$target")"; \
 		echo "Symlinking $$target -> $$file"; \
@@ -64,13 +64,13 @@ install: ## Install dotfiles from the repository to $HOME (creates symlinks)
 	done
 	@echo "Installation complete!"
 
-sync: ## Sync tracked dotfiles from $HOME to the repository, then commit and push
+sync: ## Sync tracked dotfiles from $HOME to the repository
 	@echo "Syncing dotfiles from $(HOME) to repository..."
 	@if [ ! -d "$(REPO_HOME)" ]; then \
 		echo "No dotfiles found in $(REPO_HOME)."; \
 		exit 1; \
 	fi
-	@find "$(REPO_HOME)" -type f | while read -r file; do \
+	@find "$(REPO_HOME)" -type d -name ".git" -prune -o -type f ! -name "*.zwc" ! -name "*.old" ! -name "*.mdb" ! -name ".DS_Store" -print | while read -r file; do \
 		relpath=$${file#"$(REPO_HOME)"/}; \
 		source="$(HOME)/$$relpath"; \
 		if [ -e "$$source" ]; then \
@@ -82,16 +82,7 @@ sync: ## Sync tracked dotfiles from $HOME to the repository, then commit and pus
 			echo "Warning: $$source no longer exists in home directory."; \
 		fi; \
 	done
-	@echo "Syncing dotfiles with remote..."
-	@git pull --rebase || echo "No remote or pull failed, continuing..."
-	@git add .
-	@if git diff --staged --quiet; then \
-		echo "No changes to commit."; \
-	else \
-		git commit -m "chore: sync dotfiles $$(date +'%Y-%m-%d %H:%M:%S')"; \
-		git push || echo "Push failed. Please check your remote configuration."; \
-		echo "Successfully synced changes!"; \
-	fi
+	@echo "Sync complete!"
 
 backup: ## Create a backup of currently installed dotfiles that are tracked in this repo
 	@echo "Creating backup in $(BACKUP_DIR)..."
@@ -99,12 +90,19 @@ backup: ## Create a backup of currently installed dotfiles that are tracked in t
 		echo "No dotfiles found in $(REPO_HOME)."; \
 		exit 1; \
 	fi
-	@find "$(REPO_HOME)" -type f | while read -r file; do \
+	@mkdir -p "$(BACKUP_DIR)"
+	@find "$(REPO_HOME)" -type d -name ".git" -prune -o -type f ! -name "*.zwc" ! -name "*.old" ! -name "*.mdb" ! -name ".DS_Store" -print | while read -r file; do \
 		relpath=$${file#"$(REPO_HOME)"/}; \
 		target="$(HOME)/$$relpath"; \
-		if [ -e "$$target" ] && [ ! -L "$$target" ]; then \
-			mkdir -p "$(BACKUP_DIR)/$$(dirname "$$relpath")"; \
-			cp -a "$$target" "$(BACKUP_DIR)/$$relpath"; \
+		if [ -e "$$target" ] || [ -L "$$target" ]; then \
+			echo "Backing up $$target"; \
+			mkdir -p "$(BACKUP_DIR)/home/$$(dirname "$$relpath")"; \
+			cp -Lp "$$target" "$(BACKUP_DIR)/home/$$relpath"; \
 		fi; \
 	done
-	@echo "Backup complete!"
+	@if [ ! -d "$(BACKUP_DIR)/home" ] || [ -z "$$(ls -A "$(BACKUP_DIR)/home")" ]; then \
+		rm -rf "$(BACKUP_DIR)" 2>/dev/null || true; \
+		echo "No existing files to backup."; \
+	else \
+		echo "Backup complete!"; \
+	fi
