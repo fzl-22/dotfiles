@@ -42,7 +42,10 @@
     "model_parameters": [],
   },
   "agent_servers": {
+    "gemini": {
+      "type": "registry",
     },
+  },
   "git": {
     "inline_blame": {
       "show_commit_summary": true,
@@ -59,7 +62,7 @@
   "buffer_font_size": 15,
   "theme": {
     "mode": "dark",
-    "light": "macOS Classic Light",
+    "light": "Catppuccin Latte",
     "dark": "Catppuccin Macchiato",
   },
   "diagnostics": {
