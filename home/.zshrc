@@ -1,5 +1,8 @@
+# --- Begin Oh My Zsh initialization ---
 export ZSH="$HOME/.oh-my-zsh"
+
 ZSH_THEME="spaceship"
+
 plugins=(
   copybuffer
   copyfile
@@ -11,7 +14,6 @@ plugins=(
   kubectl
   node
   npm
-  nvm
   uv
   yarn
   zsh-interactive-cd
@@ -20,6 +22,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+# --- End Oh My Zsh initialization ---
 
 # Brew
 eval $(/opt/homebrew/bin/brew shellenv)
@@ -51,12 +54,14 @@ alias cleanupmobile="$HOME/Scripts/cleanup-mobile.sh"
 alias cleanupcaches="$HOME/Scripts/cleanup-caches.sh"
 # --- End of Custom Aliases ---
 
-# Fastfetch
-fastfetch
-
 # iTerm2 Shell Integration
 test -e "$HOME/.iterm2_shell_integration.zsh" && source "$HOME/.iterm2_shell_integration.zsh" || true
 
 # NVM
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
+[[ -r $NVM_DIR/bash_completion ]] && \. $NVM_DIR/bash_completion
+
+# Fastfetch
+fastfetch
+
