@@ -282,6 +282,11 @@ run = ["move-node-to-workspace M", "layout accordion"]
 if.app-id = "ru.keepcoder.Telegram"
 run = ["move-node-to-workspace M", "layout accordion"]
 
+# N -> Notes
+[[on-window-detected]]
+if.app-id = "notion.id"
+run = ["move-node-to-workspace N", "layout accordion"]
+
 # O -> Offices
 [[on-window-detected]]
 if.app-id = "asc.onlyoffice.ONLYOFFICE"
@@ -291,3 +296,4 @@ run = ["move-node-to-workspace O", "layout accordion"]
 [[on-window-detected]]
 if.app-id = "com.googlecode.iterm2"
 run = ["move-node-to-workspace T", "layout accordion"]
+
